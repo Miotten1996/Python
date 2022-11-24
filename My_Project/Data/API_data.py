@@ -15,7 +15,7 @@ raw_data = response.json()
 # Explore data
 print(raw_data.keys())
 print(raw_data['Meta Data'])
-print(raw_data['Time Series (5min'])
+print(raw_data['Time Series (5min)'])
 
 # Transform time series data into dataframe
 data = raw_data['Time Series (5min)']
@@ -27,16 +27,17 @@ df.rename(columns=lambda s: s[3:], inplace=True)
 
 # Ask input for the investment program
 numstocks = int(input("How many stocks do you want to buy?"))
-buydate = pd.Timestamp("What time and day do you want to buy?")
-selldate = pd.Timestamp("What time and day do you want to sell?")
+buydate = pd.Timestamp(input("What time and day do you want to buy?"))
+selldate = pd.Timestamp(input("What time and day do you want to sell?"))
 
 # Calculate the output values (currency to be added)
 df['totalprice'] = df['close'] * numstocks
-print("Your total investment for", numstocks, "stocks is", df.loc[buydate, "totalprice"], buydate)
+
+print("Your total investment for", numstocks, "stocks is", df.loc[buydate, "totalprice"], "if you buy on", buydate)
 print("The price if you sell on", selldate, "is", df.loc[selldate, "totalprice"])
 print("The return if you sell on", selldate, "is", (df.loc[selldate, "totalprice"] -
       df.loc[buydate, "totalprice"]), "which is a",
-      (((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) - df.loc[buydate, "totalprice"]) /
+      ((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) /
       df.loc[buydate, "totalprice"]) * 100, "percent change"
       )
 

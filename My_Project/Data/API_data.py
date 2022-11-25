@@ -2,9 +2,9 @@
 
 # Import packages (if needed, first install in terminal -- command prompt with: pip install <packagename>
 import requests
+import datetime
 import pandas as pd
-#import datetime as dt
-
+import matplotlib.pyplot as plt
 
 # Import dataset from alphavantage (INTRADAY only covers 2 months, instead we can use time_series_daily)
 #response = requests.get("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&outputsize=full&apikey=demo")
@@ -32,23 +32,37 @@ df = pd.DataFrame(data).T.apply(pd.to_numeric)
 # print length of df number of rows = 5805
 print(df.shape[0])
 
+# Fix the column names and specify the index as date time type
+df.index = pd.DatetimeIndex(df.index)
+df.index = df.index.strftime("%m-%d-%Y")
+print(df)
+df.rename(columns=lambda s: s[3:], inplace=True)
+
+#create a plot: >> totalprice plotten
+#fig, ax = plt.subplots()
+#plot = df[['open', 'high', 'low', 'close']].plot(ax=ax)
+#plt.show()
+
+#CREATE NEW COLUMNS
+df['totalprice'] = df['close']*df['volume']
+print(df)
+
+#create a plot: >> totalprice plotten
+fig, ax = plt.subplots()
+plot = df[['totalprice']].plot(ax=ax)
+plt.show()
+
+
 #search first and last date
 Firsdate = (str(df.index[-1]))
 Lastdate = (str(df.index[0]))
-
-#print(df.index[-1])
-# Fix the column names and specify the index as date time type
-df.index = pd.DatetimeIndex(df.index)
-#df.index = pd.DatetimeIndex(df.index.strftime('%m/%d/%Y'))
-df.rename(columns=lambda s: s[3:], inplace=True)
-
 
 # Ask input for the investment program
 cashbalance= int(input('What is your cashbalance'))
 numstocks = int(input("How many stocks do you want to buy?"))
 print("For the next questions, please fill a date between", Firsdate, "and", Lastdate)
-buydate = pd.Timestamp(input("What time and day do you want to buy? Fill a date"))
-selldate = pd.Timestamp(input("What time and day do you want to sell? Fill a date"))
+buydate = pd.Timestamp(input("What day do you want to buy? Fill a date"))
+selldate = pd.Timestamp(input("What day do you want to sell? Fill a date"))
 
 # Calculate the output values (currency to be added)
 df['totalprice'] = df['close'] * numstocks
@@ -63,6 +77,8 @@ print("The return if you sell on", selldate, "is $", round((df.loc[selldate, "to
       )
 print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice"]+ df.loc[selldate, "totalprice"])
 
+
+
 # add statement if the cashbalance below 0 then send an message your cashbalance is less then your total investment
 # add currency to selldate #Shenyu #done
 
@@ -76,7 +92,13 @@ print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice
 # line 40 change the columns
 
 
-#
+# Change date formats to Month date year --> check (Michelle)
+
+#remove time in code --> check (Michelle)
+
+#Create plot obv notebook --> example notebook
+
+
 
 
 

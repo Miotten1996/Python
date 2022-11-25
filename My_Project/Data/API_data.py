@@ -59,7 +59,7 @@ print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice
 # adjust url with multiple stocks (Quote endpoint) - write input statement where you can select a stockname #Susanne
 
 # Insert your cashbalance > update the cashbalance with how much money they lost or won #Together - Michelle
-# line 40
+# line 40 change the columns
 
 
 

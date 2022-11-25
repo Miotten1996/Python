@@ -31,6 +31,7 @@ df.index = pd.DatetimeIndex(df.index)
 df.rename(columns=lambda s: s[3:], inplace=True)
 
 # Ask input for the investment program
+cashbalance= int(input('What is your cashbalance'))
 numstocks = int(input("How many stocks do you want to buy?"))
 buydate = pd.Timestamp(input("What time and day do you want to buy? Fill like: 1999-11-22"))
 selldate = pd.Timestamp(input("What time and day do you want to sell? Fill like: 1999-11-22"))
@@ -44,10 +45,12 @@ print("The return if you sell on", selldate, "is $", round((df.loc[selldate, "to
      round((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) /
       df.loc[buydate, "totalprice"], 6)* 100, "%"
       )
+print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice"]+ df.loc[selldate, "totalprice"])
 
-# add currency to selldate #Shenyu
+# add statement if the cashbalance below 0 then send an message your cashbalance is less then your total investment
+# add currency to selldate #Shenyu #done
 
-# change number formatting: 2/3 numbers after comma #Shenyu
+# change number formatting: 2/3 numbers after comma #Shenyu#done
 
 # look at range of dates & add condition in input statement ("fill date between xx and xx") #Michelle
 

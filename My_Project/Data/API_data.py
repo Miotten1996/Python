@@ -38,11 +38,11 @@ selldate = pd.Timestamp(input("What time and day do you want to sell? Fill like:
 # Calculate the output values (currency to be added)
 df['totalprice'] = df['close'] * numstocks
 print("Your total investment for", numstocks, "stocks is", df.loc[buydate, "totalprice"], "if you buy on", buydate) #df = lookup in df
-print("The price if you sell on", selldate, "is", df.loc[selldate, "totalprice"])
-print("The return if you sell on", selldate, "is $", (df.loc[selldate, "totalprice"] -
-      df.loc[buydate, "totalprice"]), "which is a",
-      ((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) /
-      df.loc[buydate, "totalprice"]) * 100, "percent change"
+print("The price if you sell on", selldate, "is $", df.loc[selldate, "totalprice"])
+print("The return if you sell on", selldate, "is $", round((df.loc[selldate, "totalprice"] -
+      df.loc[buydate, "totalprice"]),6), "which is a",
+     round((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) /
+      df.loc[buydate, "totalprice"], 6)* 100, "%"
       )
 
 # add currency to selldate #Shenyu

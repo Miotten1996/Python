@@ -4,6 +4,7 @@
 import requests
 import pandas as pd
 
+
 # Import dataset from alphavantage (INTRADAY only covers 2 months, instead we can use time_series_daily)
 #response = requests.get("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&outputsize=full&apikey=demo")
 #if response.status_code != 200:
@@ -36,10 +37,9 @@ selldate = pd.Timestamp(input("What time and day do you want to sell? Fill like:
 
 # Calculate the output values (currency to be added)
 df['totalprice'] = df['close'] * numstocks
-
 print("Your total investment for", numstocks, "stocks is", df.loc[buydate, "totalprice"], "if you buy on", buydate) #df = lookup in df
 print("The price if you sell on", selldate, "is", df.loc[selldate, "totalprice"])
-print("The return if you sell on", selldate, "is", (df.loc[selldate, "totalprice"] -
+print("The return if you sell on", selldate, "is $", (df.loc[selldate, "totalprice"] -
       df.loc[buydate, "totalprice"]), "which is a",
       ((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) /
       df.loc[buydate, "totalprice"]) * 100, "percent change"

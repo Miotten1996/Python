@@ -76,7 +76,7 @@ print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice
 # line 40 change the columns
 
 
-
+#
 
 
 

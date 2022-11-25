@@ -3,6 +3,7 @@
 # Import packages (if needed, first install in terminal -- command prompt with: pip install <packagename>
 import requests
 import pandas as pd
+#import datetime as dt
 
 
 # Import dataset from alphavantage (INTRADAY only covers 2 months, instead we can use time_series_daily)
@@ -22,19 +23,32 @@ print(raw_data.keys())
 print(raw_data['Meta Data'])
 print(raw_data['Time Series (Daily)'])
 
+
 # Transform time series data into dataframe
 data = raw_data['Time Series (Daily)']
 df = pd.DataFrame(data).T.apply(pd.to_numeric)
 
+
+# print length of df number of rows = 5805
+print(df.shape[0])
+
+#search first and last date
+Firsdate = (str(df.index[-1]))
+Lastdate = (str(df.index[0]))
+
+#print(df.index[-1])
 # Fix the column names and specify the index as date time type
 df.index = pd.DatetimeIndex(df.index)
+#df.index = pd.DatetimeIndex(df.index.strftime('%m/%d/%Y'))
 df.rename(columns=lambda s: s[3:], inplace=True)
+
 
 # Ask input for the investment program
 cashbalance= int(input('What is your cashbalance'))
 numstocks = int(input("How many stocks do you want to buy?"))
-buydate = pd.Timestamp(input("What time and day do you want to buy? Fill like: 1999-11-22"))
-selldate = pd.Timestamp(input("What time and day do you want to sell? Fill like: 1999-11-22"))
+print("For the next questions, please fill a date between", Firsdate, "and", Lastdate)
+buydate = pd.Timestamp(input("What time and day do you want to buy? Fill a date"))
+selldate = pd.Timestamp(input("What time and day do you want to sell? Fill a date"))
 
 # Calculate the output values (currency to be added)
 df['totalprice'] = df['close'] * numstocks
@@ -60,10 +74,6 @@ print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice
 
 # Insert your cashbalance > update the cashbalance with how much money they lost or won #Together - Michelle
 # line 40 change the columns
-
-
-
-
 
 
 

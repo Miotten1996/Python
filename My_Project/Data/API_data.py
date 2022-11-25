@@ -38,6 +38,8 @@ selldate = pd.Timestamp(input("What time and day do you want to sell? Fill like:
 
 # Calculate the output values (currency to be added)
 df['totalprice'] = df['close'] * numstocks
+totalprice = df.loc[buydate, 'close'] * numstocks
+
 print("Your total investment for", numstocks, "stocks is", df.loc[buydate, "totalprice"], "if you buy on", buydate) #df = lookup in df
 print("The price if you sell on", selldate, "is $", df.loc[selldate, "totalprice"])
 print("The return if you sell on", selldate, "is $", round((df.loc[selldate, "totalprice"] -
@@ -57,6 +59,7 @@ print('Your current cashbalance is $', cashbalance - df.loc[buydate, "totalprice
 # adjust url with multiple stocks (Quote endpoint) - write input statement where you can select a stockname #Susanne
 
 # Insert your cashbalance > update the cashbalance with how much money they lost or won #Together - Michelle
+# line 40
 
 
 

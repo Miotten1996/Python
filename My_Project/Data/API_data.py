@@ -84,6 +84,7 @@ fig, ax = plt.subplots()
 plot = df[['totalprice']].plot(ax=ax)
 ax.set_title('Total value of stocks over time')
 ax.set_ylabel('Total price x100.000.000')
+plot.invert_xaxis()
 ax.set_xlabel('buy-date')
 plt.show() #hierna window sluiten
 
@@ -105,7 +106,7 @@ df['totalprice'] = df['close'] * numstocks
 totalprice = df.loc[buydate, 'close'] * numstocks
 
 print("Your total investment for", numstocks, "stocks is", round(df.loc[buydate, "totalprice"], 6),"if you buy on", buydate) #df = lookup in df
-print("The price if you sell on", selldate, "is $", df.loc[selldate, "totalprice"])
+print("The price if you buy on", buydate, "is $", round(df.loc[buydate, "totalprice"],6))
 print("The return if you sell on", selldate, "is $", round((df.loc[selldate, "totalprice"] -
       df.loc[buydate, "totalprice"]),6), "which is a",
      round((df.loc[selldate, "totalprice"] - df.loc[buydate, "totalprice"]) /

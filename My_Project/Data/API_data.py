@@ -7,13 +7,43 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
+# Use a personal KEY (requested via https://www.alphavantage.co/support/#api-key)
+privatekey = "YRX7910M3YV16XQB"
 
-# Import dataset from alphavantage (INTRADAY only covers 2 months, instead we can use time_series_daily)
-#response = requests.get("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&outputsize=full&apikey=demo")
-#if response.status_code != 200:
- #   raise ValueError("Could not retrieve data, code:", response.status_code)
+# Lookup what stock you want to buy and get the symbol
+keyword = input("Enter symbol search word")
 
-response = requests.get("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=demo")
+url = f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={privatekey}"
+r = requests.get(url)
+data = r.json()
+
+# Output is a dictionary called "best matches"[1. symbol 2. name, 3. type, 4. region, 8. currency and 9. matchScore)
+
+# Transform data into dataframe
+targetdata = data['bestMatches']
+df = pd.DataFrame(targetdata)
+
+# Change datatypes and sort on highest match score
+df['9. matchScore'] = pd.to_numeric(df['9. matchScore'])
+df.rename(columns=lambda s: s[3:], inplace=True)
+df.sort_values(by='matchScore', ascending=False, na_position='last')
+
+# Select top results
+dftop = df.nlargest(30, "matchScore")
+
+print(f"Your search results for the keyword {keyword} are:")
+print(dftop)
+
+symbolrow = int(input("Enter the row number of the symbol you want to use from the list above"))
+
+symbol = df.iloc[symbolrow, 0]
+
+# Retrieve the data of the stock that was selected
+url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=full&apikey={privatekey}"
+
+
+# Import dataset from alphavantage time_series_daily adjusted
+response = requests.get(url)
 if response.status_code != 200:
     raise ValueError("Could not retrieve data, code:", response.status_code)
 

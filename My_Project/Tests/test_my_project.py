@@ -3,8 +3,6 @@
 # Import packages (if needed, first install in terminal -- command prompt with: pip install <packagename>
 import requests
 import pandas as pd
-import inquirer
-from inquirer.themes import GreenPassion
 
 # Use a personal KEY (requested via https://www.alphavantage.co/support/#api-key)
 privatekey = "YRX7910M3YV16XQB"
@@ -29,22 +27,19 @@ df.sort_values(by='matchScore', ascending=False, na_position='last')
 
 # Select top results
 dftop = df.nlargest(30, "matchScore")
-col_list = dftop.name.values.tolist()
 
-# Ask user to select a symbol and use as input for next API request
-questions = [
-  inquirer.List('symbol',
-                message="What stock do you need?",
-                choices=col_list
-                )
-]
+print(f"Your search results for the keyword {keyword} are:")
+print(dftop)
 
-inquirer.prompt(questions, theme=GreenPassion())
+symbolrow = int(input("Enter the row number of the symbol you want to use from the list above"))
+
+symbol = df.iloc[symbolrow, 0]
 
 # Retrieve the data of the stock that was selected
-url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={privatekey}"
+url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=full&apikey={privatekey}"
 
 response = requests.get(url)
 if response.status_code != 200:
     raise ValueError("Could not retrieve data, code:", response.status_code)
 
+raw_data = response.json()

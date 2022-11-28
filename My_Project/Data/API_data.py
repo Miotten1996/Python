@@ -34,7 +34,7 @@ print(df.shape[0])
 
 # Fix the column names and specify the index as date time type
 df.index = pd.DatetimeIndex(df.index)
-df.index = df.index.strftime("%m-%d-%Y")
+df.index = df.index.strftime("%d-%m-%Y")
 print(df)
 df.rename(columns=lambda s: s[3:], inplace=True)
 
